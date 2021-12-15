@@ -1,5 +1,4 @@
 import axios from "axios"
-import { title } from "process"
 import { useCallback, useState } from "react"
 import { useHistory } from "react-router-dom"
 
@@ -17,7 +16,8 @@ export const useAuth = () => {
         setLoading(true)
         axios.get<User>(`https://jsonplaceholder.typicode.com/users/${id}`).then((res) => {
             if(res.data){
-                setLoginUser(res.data)
+                const isAdmin = res.data.id === 10 ? true : false
+                setLoginUser({...res.data,isAdmin})
                 showMasage({title: "ログインしました", status: "success"})
                 histry.push("/home")
             }else{
